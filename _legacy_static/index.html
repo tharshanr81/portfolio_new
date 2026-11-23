@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tharshan-Portfolio</title>
+    <link rel="icon" type="image/png" href="circle-t.png">
+    <link href="https://fonts.googleapis.com/css2? family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --purple-light: #a855f7;
+            --dark-bg: #0d0d0d;
+            --card-bg: #1f1f1f;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: white;
+            scroll-behavior: smooth;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            z-index: 1000;
+            transition: background 0.4s ease-out, backdrop-filter 0.4s ease-out, padding 0.4s ease-out;
+        }
+
+        header.scrolled {
+            background: rgba(13, 13, 13, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+
+        nav a {
+            margin-left: 1.5rem;
+            color: white;
+            text-decoration: none;
+            position: relative;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        nav a::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: linear-gradient(90deg, #a855f7, #60a5fa);
+            transition: width 0.4s ease;
+            border-radius: 2px;
+        }
+
+        nav a:hover {
+            color: #a855f7;
+            transform: translateY(-3px);
+            text-shadow: 0 0 8px #a855f7;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+
+        section {
+            padding: 6rem 2rem;
+            text-align: center;
+            background-color: var(--dark-bg);
+            position: relative;
+        }
+
+        .hero {
+            min-height: 100vh;
+
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .hero-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            width: 100%;
+
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+
+        .hero-text {
+            flex: 1;
+            min-width: 300px;
+            text-align: left;
+        }
+
+        .hero-image {
+            flex: 1;
+            min-width: 250px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-image img {
+            max-width: 400px;
+            width: 100%;
+            border-radius: 16rem;
+            background-color: #7e22ce;
+            box-shadow: 0 15px 30px rgba(178, 174, 181, 0.2);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .hero-image img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 35px rgba(168, 85, 247, 0.4);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #ccc;
+            margin-bottom: 2rem;
+        }
+
+        .button {
+            background-color: #9333ea;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .button:hover {
+            background-color: #7e22ce;
+            transform: translateY(-2px);
+        }
+
+        .projects-wrapper,
+        .certificates-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+
+        .project-grid,
+        .certificate-grid {
+            display: grid;
+
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+
+            margin-top: 2rem;
+        }
+
+
+        .project-card {
+
+            height: 250px;
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-decoration: none;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card:hover {
+
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(168, 85, 247, 0.4);
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+        }
+
+        .project-card:hover h3 {
+            color: var(--purple-light);
+            text-shadow: 0 0 5px var(--purple-light);
+        }
+
+        .project-card:hover span {
+            color: #60a5fa;
+        }
+
+        .certificate-card {
+            background: linear-gradient(145deg, #1a1a1a, #111);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid #2e2e2e;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            text-align: left;
+            position: relative;
+
+        }
+
+        .certificate-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(168, 85, 247, 0.4);
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+        }
+
+        .certificate-card h3 {
+            font-size: 1.2rem;
+            color: #f3f3f3;
+            margin-bottom: 0.5rem;
+        }
+
+        .certificate-card:hover h3 {
+            color: var(--purple-light);
+            text-shadow: 0 0 5px var(--purple-light);
+        }
+
+        .certificate-card:hover .project-btn {
+            color: #3b82f6 !important;
+        }
+
+        .certificate-card p {
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .certificate-card a {
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .certificate-card a:hover {
+            color: var(--purple-light);
+        }
+
+        .skill {
+            width: 120px;
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .skill img,
+        .skill .placeholder {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto;
+        }
+
+        .skill .placeholder {
+            background: linear-gradient(orange, red);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border-radius: 8px;
+            font-size: 1.2rem;
+        }
+
+        .skill p {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+
+
+        .skill:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(168, 85, 247, 0.3);
+        }
+
+        footer {
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #888;
+            background: var(--dark-bg);
+            position: relative;
+        }
+
+
+        .top-link-wrapper {
+            text-align: center;
+            padding-bottom: 2rem;
+            background-color: var(--dark-bg);
+        }
+
+        .contact1,
+        .contact2,
+        .contact3,
+        .contact4 {
+            transition: transform 0.4s ease, color 0.4s ease, text-shadow 0.4s;
+        }
+
+        .contact1:hover,
+        .contact2:hover,
+        .contact3:hover,
+        .contact4:hover {
+            transform: scale(1.05);
+            color: var(--purple-light);
+            text-shadow: 0 0 5px var(--purple-light);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in.fade-out {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+
+
+
+
+        /* =========================
+   MOBILE RESPONSIVE DESIGN
+   ========================= */
+
+        @media (max-width: 768px) {
+
+            html,
+            body {
+                overflow-x: hidden;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            header h1 {
+                font-size: 1.6rem;
+                margin: 0;
+            }
+
+            nav {
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+                gap: 0.8rem;
+            }
+
+            nav a {
+                margin: 0;
+                font-size: 0.9rem;
+                padding: 0.4rem 0.6rem;
+            }
+
+            .hero {
+                padding-top: 9rem;
+            }
+
+            section {
+                padding: 4rem 1rem;
+            }
+
+            .hero-container {
+                flex-direction: column-reverse;
+                text-align: center;
+                gap: 3rem;
+            }
+
+            .hero-text {
+                min-width: 100%;
+                text-align: center;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+                line-height: 1.3;
+            }
+
+            .hero-text p {
+                font-size: 1rem;
+                line-height: 1.6;
+                margin-top: 1rem;
+            }
+
+            #title {
+                margin-top: 20px;
+                margin-bottom: 0;
+            }
+
+            .button {
+                margin-top: 2rem;
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .hero-image {
+                min-width: 100%;
+            }
+
+            .hero-image img {
+                width: 280px;
+                height: 280px;
+                object-fit: cover;
+                border-radius: 0%;
+            }
+
+            .project-grid,
+            .certificate-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-card,
+            .certificate-card {
+                width: 100%;
+            }
+
+            .skills-grid {
+                gap: 1rem;
+            }
+
+            .skill {
+                width: 100px;
+                padding: 0.8rem;
+            }
+
+            .skill img,
+            .skill .placeholder {
+                width: 50px;
+                height: 50px;
+            }
+
+            .contact-form {
+                width: 100%;
+                padding: 10px;
+            }
+
+            .contact-form input,
+            .contact-form textarea,
+            .contact-form button {
+                font-size: 15px;
+            }
+
+            footer {
+                font-size: 0.8rem;
+                padding: 1.5rem 1rem;
+            }
+        }
+
+
+        /* EXTRA SMALL DEVICES */
+
+        @media (max-width: 480px) {
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-text p {
+                font-size: 0.95rem;
+            }
+
+            h2 {
+                font-size: 1.5rem !important;
+            }
+
+            nav {
+                gap: 0.5rem;
+            }
+
+            nav a {
+                font-size: 0.8rem;
+                padding: 0.3rem 0.4rem;
+            }
+
+            .hero {
+                padding-top: 10rem;
+            }
+
+           
+
+            .project-card {
+                height: auto;
+                min-height: 220px;
+            }
+
+            .certificate-card {
+                padding: 1.2rem;
+            }
+        }
+
+
+
+        .hero-text p {
+            font-size: 1.75rem;
+            font-weight: 700;
+
+
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        #title span {
+            display: inline-block;
+            overflow: hidden;
+            height: 1.8em;
+            vertical-align: bottom;
+
+            color: blueviolet;
+        }
+
+        .hero-text p {
+            margin: 1rem 0;
+            font-size: 1.2rem;
+            position: static;
+        }
+
+        .button {
+            margin-top: 5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+
+        }
+
+        .hero-text p {
+            font-size: 1.5rem;
+            margin-top: 30px;
+        }
+
+
+
+        .hero-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        #title {
+            margin-top: 45px;
+            margin-bottom: -30px;
+        }
+
+        .project-card h3 {
+            min-height: 48px;
+        }
+
+
+        .project-btn {
+            transition: all 0.3s ease;
+        }
+
+        .project-btn:hover {
+            transform: translateX(5px);
+            color: #a855f7;
+        }
+
+        .contact-form {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .contact-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #444;
+            border-radius: 10px;
+            background: #111;
+            color: white;
+            font-size: 16px;
+        }
+
+        .contact-form button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: #a855f7;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .contact-form button:hover {
+            opacity: 0.9;
+        }
+
+        .top:hover {
+            color: #f8efff;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1><span style="color: #f6ecff;">Thar</span><span style="color: #a855f7;">shan </span></h1>
+        <nav>
+            <a href="#about">About Me</a>
+            <a href="#projects">Projects</a>
+            <a href="#skills">Skills</a>
+            <a href="#uidesign">UI/UX Designs</a>
+            <a href="#certificates">Certificates</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-text">
+                <h1 class="fade-in" style="transition-delay: 0.2s;">Hi, I'm <span style="color: #a855f7">Tharshan
+                        R</span></h1>
+                <p class="fade-in" id="title" style="transition-delay: 0.4s; ">Built 10+ projects | Focused on UI/UX &
+                    Frontend Development </p>
+                <button class="button fade-in" style="transition-delay: 0.6s;"
+                    onclick="document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });">Explore My
+                    Projects</button>
+            </div>
+            <div class="hero-image fade-in">
+
+                <img id="heroImg" src="photo.png" alt="Tharshan R" class="hero-img">
+
+
+            </div>
+
+        </div>
+    </section>
+
+    <section id="about" class="fade-in">
+        <h2 style="font-size: 2rem; font-weight: bold;">About Me</h2>
+        <p style="max-width: 600px; font-size: 1.25rem; margin: 1rem auto; color: #bdbdbd; ">
+            Aspiring <span class="highlight">Full-Stack Developer focused on building clean, responsive web applications
+                using JavaScript and React. Passionate about solving real-world problems through code and continuously
+                improving.
+        </p>
+    </section>
+
+    <section id="projects">
+        <div class="projects-wrapper fade-in">
+            <h2 style="font-size: 2rem; font-weight: bold;">Projects</h2>
+            <div class="project-grid">
+                <a href="project1.html" class="project-card fade-in">
+                    <div>
+                        <h3 style="font-size: 1.25rem; font-weight: 600;">Multiple Form Filler</h3>
+                        <p style="color: #ccc; font-size: 0.9rem; margin-top: 0.5rem;">Auto-fills web forms using SQL
+                            database integration and browser automation.</p>
+                    </div>
+                    <span class="project-btn">Explore →</span>
+                </a>
+                <a href="project2.html" class="project-card fade-in" style="transition-delay: 0.2s;">
+                    <div>
+                        <h3 style="font-size: 1.25rem; font-weight: 600;">Crowd Level Classification based on Wi-Fi RSSI
+                        </h3>
+                        <p style="color: #ccc; font-size: 0.9rem; margin-top: 0.5rem;">Estimates crowd density using
+                            Wi-Fi signal strength (RSSI) variations.</p>
+                    </div>
+                    <span class="project-btn">Explore →</span>
+                </a>
+
+                <a href="#projects" class="project-card fade-in" style="transition-delay: 0.4s; cursor:not-allowed;"
+                    title="This project will be available soon">
+
+                    <div>
+                        <h3 style="font-size: 1.25rem; font-weight: 600;">Project 3</h3>
+                        <p style="color: #ccc; font-size: 0.9rem; margin-top: 0.5rem;">New project in progress</p>
+                    </div>
+                    <!-- <span class="project-btn">Explore →</span> -->
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <div class="projects-wrapper fade-in">
+            <h2 style="font-size: 2rem; font-weight: bold;">Skills </h2>
+            <div class="skills-grid">
+                <div class="skill fade-in" style="transition-delay: 0.4s;">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React">
+                    <p>React (Vite)</p>
+                </div>
+                <div class="skill fade-in" style="transition-delay: 0.2s;"><img
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+                        alt="JavaScript">
+                    <p>JavaScript</p>
+                </div>
+                <div class="skill fade-in"><img
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML">
+                    <p>HTML</p>
+                </div>
+                <div class="skill fade-in" style="transition-delay: 0.1s;"><img
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS">
+                    <p>CSS</p>
+                </div>
+                <div class="skill fade-in" style="transition-delay: 0.5s;"><img
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="java">
+                    <p>Java</p>
+                </div>
+                <div class="skill fade-in" style="transition-delay: 0.5s;"><img
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+                        alt="Python">
+                    <p>Python</p>
+                </div>
+                <div class="skill fade-in" style="transition-delay: 0.3s;"><img
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma">
+                    <p>Figma</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="uidesign">
+        <div class="projects-wrapper fade-in">
+            <h2 style="font-size: 2rem; font-weight: bold;">UI/UX Designs</h2>
+            <div class="project-grid">
+                <a href="ui_ux_designs/app_designs.html" class="project-card fade-in">
+                    <div>
+                        <h3 style="font-size: 1.25rem; font-weight: 600;">UI Prototype Collection</h3>
+                        <h5> Figma · Wireframing · Prototyping</h5>
+
+
+                    </div>
+                    <span>Explore →</span>
+                </a>
+                <a href="ui_ux_designs/tasks_intern.html" class="project-card fade-in" style="transition-delay: 0.2s;">
+                    <div>
+                        <h3 style="font-size: 1.25rem; font-weight: 600;">UI/UX Design Training
+                        </h3>
+                        <h5>Figma · UX Research · Prototyping</h5>
+
+                    </div>
+                    <span>Explore →</span>
+                </a>
+                <a href="#contact" class="project-card fade-in" style="transition-delay: 0.4s;">
+                    <div>
+                        <h3 style="font-size: 1.25rem; font-weight: 600;">Available for Projects</h3>
+                        <h5>Open for freelance</h5>
+                    </div>
+                    <span> Contact Me →</span>
+                </a>
+                <a href="#uidesign" class="project-card fade-in" style="transition-delay: 0.6s; cursor:not-allowed;"
+                    title="This session in progress">
+                    <div>
+                        <h3 style="font-size: 1.25rem; font-weight: 600;">Upcoming Case Studies</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section id="certificates">
+        <div class="certificates-wrapper fade-in">
+            <h2 style="font-size: 2rem; font-weight: bold;">Certificates</h2>
+            <div class="certificate-grid">
+                <div class="certificate-card fade-in">
+                    <h3>Python</h3>
+                    <p class="coming-soon">Python based Certifications</p>
+                    <a href="New_folder/python_certification.html" target="_self" tabindex="-1"
+                        aria-disabled="true"><span class="project-btn" style="color:ghostwhite">Explore →</span></a>
+                </div>
+                <div class="certificate-card fade-in" style="transition-delay: 0.2s;">
+                    <h3>Web Development</h3>
+                    <p class="coming-soon">Web designs</p>
+                    <a href="New_folder/web_Related.html" tabindex="-1" aria-disabled="true"><span class="project-btn"
+                            style="color:ghostwhite">Explore →</span></a>
+                </div>
+                <div class="certificate-card fade-in" style="transition-delay: 0.4s;">
+                    <h3>UI/UX Design</h3>
+                    <p>ui/ux</p>
+                    <a href="New_folder/ui_certificates.html" style="color:#a855f7;"><span class="project-btn"
+                            style="color:ghostwhite">Explore →</span></a>
+                </div>
+                <div class="certificate-card fade-in" style="transition-delay: 0.6s;">
+                    <h3>Knowledge Beyond Boundaries</h3>
+                    <p>Others</p>
+                    <a href="certificate_beyond.html" style="color:#a855f7;"><span class="project-btn"
+                            style="color:ghostwhite">Explore →</span></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section id="contact" class="fade-in">
+        <h2>Contact Me</h2> <br>
+        <p style="margin-bottom: 1rem; color: #ccc;">Let's connect! Reach out through any platform below.</p><br>
+        <div style="font-size: 2rem; display: flex; justify-content: center; gap: 2rem;">
+            <a href="https://github.com/tharshanr81" class="contact1" title="GitHub"
+                style="color: #a855f7; text-decoration: none;">
+                <i class="fab fa-github"></i>
+            </a>
+
+            <a href="https://www.linkedin.com/in/tharshanr81/" class="contact2" title="LinkedIn"
+                style="color: #a855f7; text-decoration: none;">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="#contact" class="contact3" title="Email"
+                style="color: #a855f7; text-decoration: none; font-size: 34px;">
+                <i class="fas fa-envelope"></i>
+            </a>
+
+            <!-- Email Text -->
+
+        </div>
+        <div class="contact-form">
+
+
+
+            <form id="contactForm">
+                <h2 class="message" style="color: #a855f7;"></h2>
+
+                <input type="text" name="name" placeholder="Your Name" required>
+
+                <input type="email" name="email" placeholder="Your Email" required>
+
+                <input type="text" name="subject" placeholder="Subject" required>
+
+                <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
+
+                <button type="submit">Send Message</button>
+
+            </form>
+
+        </div>
+        <br><br><br>
+
+        <h2><a href="#" class="contact4"
+                style="color: #a855f7; font-size: x-large;text-decoration: none; font-size: 34px;" title="Back to Top">
+                <i class="fa-solid fa-circle-arrow-up"></i>
+            </a></h2>
+    </section>
+
+
+    <footer>
+
+        &copy; 2025 Tharshan R. All rights reserved.
+    </footer>
+
+    <script>
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        entry.target.classList.remove('fade-out');
+                    } else {
+
+                        entry.target.classList.remove('visible');
+                        entry.target.classList.add('fade-out');
+                    }
+                });
+            },
+            {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px",
+            }
+        );
+
+        const fadeElements = document.querySelectorAll('.fade-in');
+        fadeElements.forEach((el) => observer.observe(el));
+
+
+        function debounce(func, wait = 20, immediate = true) {
+            let timeout;
+            return function () {
+                const context = this,
+                    args = arguments;
+                const later = function () {
+                    timeout = null;
+                    if (!immediate) func.apply(context, args);
+                };
+                const callNow = immediate && !timeout;
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+                if (callNow) func.apply(context, args);
+            };
+        }
+
+        const header = document.querySelector('header');
+
+        const handleScroll = debounce(() => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        window.addEventListener('scroll', handleScroll);
+
+        const topLink = document.querySelector('a[href="#"]');
+        if (topLink) {
+            topLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+
+        emailjs.init("8tzI1US0OayPP-NF-");
+
+        document.getElementById("contactForm")
+            .addEventListener("submit", function (event) {
+
+                event.preventDefault();
+
+                emailjs.sendForm(
+                    "service_gp51kfn",
+                    "template_cocxwbn",
+                    this
+                )
+                    .then(() => {
+                        document.querySelector(".message").textContent = "Message sent successfully!";
+                        setTimeout(() => {
+                            document.querySelector(".message").textContent = "";
+                        }, 5000);
+                        this.reset();
+                    })
+                    .catch((error) => {
+                        document.querySelector(".message").textContent = "Failed to send message";
+                        console.log(error);
+                    });
+
+            });
+    </script>
+
+</body>
+
+</html>
